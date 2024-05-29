@@ -33,7 +33,7 @@ export default function Header() {
           <div className={styles["nav-category-container"]}>
             <li>
               <Link
-                href="/board"
+                href="/boards"
                 className={`${styles["nav-category"]} ${
                   styles[isActive("/board")]
                 }`}
