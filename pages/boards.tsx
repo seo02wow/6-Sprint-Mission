@@ -5,6 +5,7 @@ import { Article } from "@/types/board";
 import BestArticleList from "@/componets/board/BestArticle";
 import ArticleList from "@/componets/board/Article";
 import SearchForm from "@/componets/common/SearchForm";
+import DropDown from "@/componets/common/DropDown";
 
 export default function Board() {
   const [articleList, setArticleList] = useState<Article[]>([]);
@@ -46,7 +47,10 @@ export default function Board() {
       </section>
       <section>
         <h2 className={styles.heading}>게시글</h2>
-        <SearchForm />
+        <div className={styles["search-menu-container"]}>
+          <SearchForm />
+          <DropDown onOrderChange={setOrder} />
+        </div>
         <ArticleList articleList={articleList} />
       </section>
     </main>

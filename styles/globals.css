@@ -24,6 +24,7 @@ a {
   --primary-color: #3692ff;
   --background-blue: #cfe5ff;
   --error-red: #f74747;
+  --white: #ffffff;
   --gray900: #1b1d1f;
   --gray800: #26282b;
   --gray600: #454c53;
@@ -34,4 +35,5 @@ a {
   --gray50: #f7f7f8;
   --cool-gray50: #f9fafb;
   --cool-gray100: #f3f4f6;
+  --cool-gray200: #e5e7eb;
 }
