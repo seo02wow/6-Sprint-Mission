@@ -14,7 +14,12 @@ function MainArticle({ article }: ArticleProps) {
         <h2 className={styles.title}>{article.title}</h2>
         {article.image && (
           <div className={styles["image-wrapper"]}>
-            <Image src={article.image} fill alt="게시글 이미지" />
+            <Image
+              src={article.image}
+              width={48}
+              height={44}
+              alt="게시글 이미지"
+            />
           </div>
         )}
       </div>
