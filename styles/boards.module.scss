@@ -2,6 +2,9 @@
   max-width: 1200px;
   width: 100%;
   margin: 24px auto 0;
+  @media screen and (max-width: 1199px) {
+    padding: 0 24px;
+  }
 }
 .best-section {
   margin-bottom: 40px;

@@ -28,7 +28,7 @@ export default function SearchForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <input
         className={styles["search-bar"]}
         placeholder="검색할 상품을 입력해주세요"

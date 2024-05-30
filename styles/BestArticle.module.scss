@@ -1,14 +1,19 @@
 .best-article-list-container {
-  display: flex;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 24px;
+  @media screen and (max-width: 1199px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 767px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 
 .best-article-container {
   background-color: var(--cool-gray50);
   border-radius: 8px;
-  padding: 0 24px 0;
-  width: 384px;
-  height: 169px;
+  padding: 0 24px 16px;
 }
 .title {
   font-size: 20px;

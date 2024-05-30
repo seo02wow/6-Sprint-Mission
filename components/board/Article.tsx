@@ -25,6 +25,12 @@ function MainArticle({ article }: ArticleProps) {
       </div>
       <div className={styles["writer-like-container"]}>
         <div className={styles["writer-date-container"]}>
+          <Image
+            src="assets/images/profile.svg"
+            width={24}
+            height={24}
+            alt="프로필 기본 이미지"
+          />
           <p className={styles.nickname}>{article.writer.nickname}</p>
           <p className={styles.date}>
             {moment(article.createdAt).format("YYYY.MM.DD")}

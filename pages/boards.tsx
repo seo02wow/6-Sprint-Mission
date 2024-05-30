@@ -15,6 +15,7 @@ export default function Board() {
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageSize, setPageSize] = useState(10); // 페이지 당 게시글 수
+  const [bestPageSize, setBestPageSize] = useState(3); // 베스트 게시글 수(반응형 필요)
   const [totalPostCount, setTotalPostCount] = useState(0); // 총 게시글 수
 
   async function getArticleList() {
@@ -29,7 +30,9 @@ export default function Board() {
   }
 
   async function getBestArticleList() {
-    const res = await axios.get(`/articles?pageSize=3&orderBy=like`);
+    const res = await axios.get(
+      `/articles?pageSize=${bestPageSize}&orderBy=like`
+    );
     const nextArticleList = res.data.list;
     setBestArticleList(nextArticleList);
     console.log(nextArticleList);
@@ -37,8 +40,31 @@ export default function Board() {
 
   useEffect(() => {
     getArticleList();
+  }, [order, keyword, page, pageSize]);
+
+  useEffect(() => {
     getBestArticleList();
-  }, [order, keyword]);
+  }, [bestPageSize]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      const windowWidth = window.innerWidth;
+      if (windowWidth <= 768) {
+        setBestPageSize(1);
+      } else if (windowWidth <= 1200) {
+        setBestPageSize(2);
+      } else {
+        setBestPageSize(3); // 기본값을 3으로 설정
+      }
+    };
+
+    handleWindowResize(); // 초기 사이즈 설정
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   return (
     <main className={styles.main}>
