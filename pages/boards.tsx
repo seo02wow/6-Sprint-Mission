@@ -37,7 +37,7 @@ export default function Board() {
   useEffect(() => {
     getArticleList();
     getBestArticleList();
-  }, []);
+  }, [order]);
 
   return (
     <main className={styles.main}>
