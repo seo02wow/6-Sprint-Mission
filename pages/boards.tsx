@@ -1,9 +1,10 @@
-import styles from "@/styles/boards.module.css";
+import styles from "@/styles/boards.module.scss";
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import { Article } from "@/types/board";
 import BestArticleList from "@/componets/board/BestArticle";
 import ArticleList from "@/componets/board/Article";
+import SearchForm from "@/componets/common/SearchForm";
 
 export default function Board() {
   const [articleList, setArticleList] = useState<Article[]>([]);
@@ -45,6 +46,7 @@ export default function Board() {
       </section>
       <section>
         <h2 className={styles.heading}>게시글</h2>
+        <SearchForm />
         <ArticleList articleList={articleList} />
       </section>
     </main>

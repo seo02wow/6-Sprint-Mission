@@ -1,0 +1,15 @@
+.search-bar {
+  padding: 9px 0 9px 44px;
+  width: 1054px;
+  height: 42px;
+  border-radius: 12px;
+  border: none;
+  background: var(--cool-gray100)
+    url(../public/assets/icons/item-search-icon.svg) no-repeat left 16px center;
+
+  &::placeholder {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
