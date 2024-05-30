@@ -2,10 +2,10 @@ import styles from "@/styles/boards.module.scss";
 import { useEffect, useState } from "react";
 import axios from "@/lib/axios";
 import { Article } from "@/types/board";
-import BestArticleList from "@/componets/board/BestArticle";
-import ArticleList from "@/componets/board/Article";
-import SearchForm from "@/componets/common/SearchForm";
-import DropDown from "@/componets/common/DropDown";
+import BestArticleList from "@/components/board/BestArticle";
+import ArticleList from "@/components/board/Article";
+import SearchForm from "@/components/common/SearchForm";
+import DropDown from "@/components/common/DropDown";
 import Link from "next/link";
 
 export default function Board() {
