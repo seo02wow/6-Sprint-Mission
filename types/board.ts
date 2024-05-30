@@ -5,7 +5,7 @@ export interface Article {
   createdAt: string;
   likeCount: number;
   writer: Writer;
-  image: string;
+  image?: string;
   content: string;
   title: string;
   id: number;
