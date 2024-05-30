@@ -19,7 +19,7 @@ export default function Board() {
 
   async function getArticleList() {
     const res = await axios.get(
-      `/articles?page=${page}&pageSize=${pageSize}&orderBy=${order}`
+      `/articles?page=${page}&pageSize=${pageSize}&orderBy=${order}&keyword=${keyword}`
     );
     const nextArticleList = res.data.list;
     const nextTotalCount = res.data.totalCount;
@@ -38,7 +38,7 @@ export default function Board() {
   useEffect(() => {
     getArticleList();
     getBestArticleList();
-  }, [order]);
+  }, [order, keyword]);
 
   return (
     <main className={styles.main}>
@@ -54,7 +54,7 @@ export default function Board() {
           </Link>
         </div>
         <div className={styles["search-menu-container"]}>
-          <SearchForm />
+          <SearchForm keyword={keyword} onChangeKeyword={setKeyword} />
           <DropDown onOrderChange={setOrder} />
         </div>
         <ArticleList articleList={articleList} />
