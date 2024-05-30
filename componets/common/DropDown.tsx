@@ -22,7 +22,7 @@ export default function DropDown({ onOrderChange }: DropDownProps) {
 
   return (
     <div ref={dropdownRef} className={styles["dropdown-container"]}>
-      <button onClick={handleToggleDropdown} className={styles.dropdown}>
+      <button onClick={handleToggleDropdown} className={styles["dropdown"]}>
         {selectedOption}
       </button>
       {isOpen && (
