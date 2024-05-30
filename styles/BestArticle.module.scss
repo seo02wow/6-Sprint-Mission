@@ -1,0 +1,16 @@
+.best-article-list-container {
+  display: flex;
+  gap: 24px;
+}
+
+.best-article-container {
+  background-color: var(--cool-gray50);
+  border-radius: 8px;
+  padding: 0 24px 16px;
+  width: 384px;
+  height: 169px;
+}
+.title {
+  font-size: 20px;
+  font-weight: 600;
+}
