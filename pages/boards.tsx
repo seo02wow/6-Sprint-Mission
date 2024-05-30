@@ -6,6 +6,7 @@ import BestArticleList from "@/componets/board/BestArticle";
 import ArticleList from "@/componets/board/Article";
 import SearchForm from "@/componets/common/SearchForm";
 import DropDown from "@/componets/common/DropDown";
+import Link from "next/link";
 
 export default function Board() {
   const [articleList, setArticleList] = useState<Article[]>([]);
@@ -46,7 +47,12 @@ export default function Board() {
         <BestArticleList bestArticleList={bestArticleList} />
       </section>
       <section>
-        <h2 className={styles.heading}>게시글</h2>
+        <div className={styles["heading-button-container"]}>
+          <h2 className={styles.heading}>게시글</h2>
+          <Link href="/post" className={styles["post-button"]}>
+            글쓰기
+          </Link>
+        </div>
         <div className={styles["search-menu-container"]}>
           <SearchForm />
           <DropDown onOrderChange={setOrder} />
