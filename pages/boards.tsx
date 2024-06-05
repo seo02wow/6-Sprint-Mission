@@ -8,6 +8,7 @@ import SearchForm from "@/components/common/SearchForm";
 import DropDown from "@/components/common/DropDown";
 import Link from "next/link";
 import useDeviceSize from "@/hooks/useDeviceSize";
+import Pagination from "@/components/common/Paginaion";
 
 export default function Board() {
   const { isDesktop, isMobile, isTablet, bestPageSizeCount } = useDeviceSize();
@@ -16,7 +17,7 @@ export default function Board() {
   const [order, setOrder] = useState("recent");
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1); // 현재 페이지
-  const [pageSize, setPageSize] = useState(10); // 페이지 당 게시글 수
+  const [pageSize, setPageSize] = useState(6); // 페이지 당 게시글 수
   const [bestPageSize, setBestPageSize] = useState(bestPageSizeCount); // 베스트 게시글 수(반응형 필요)
   const [totalPostCount, setTotalPostCount] = useState(0); // 총 게시글 수
 
@@ -28,7 +29,6 @@ export default function Board() {
     const nextTotalCount = res.data.totalCount;
     setArticleList(nextArticleList);
     setTotalPostCount(nextTotalCount);
-    console.log(nextArticleList);
   }
 
   async function getBestArticleList() {
@@ -37,7 +37,6 @@ export default function Board() {
     );
     const nextArticleList = res.data.list;
     setBestArticleList(nextArticleList);
-    console.log(nextArticleList);
   }
 
   useEffect(() => {
@@ -77,6 +76,11 @@ export default function Board() {
         </div>
         <ArticleList articleList={articleList} />
       </section>
+      <Pagination
+        currentPage={page}
+        onPageChange={setPage}
+        totalPage={Math.ceil(totalPostCount / pageSize)}
+      />
     </main>
   );
 }

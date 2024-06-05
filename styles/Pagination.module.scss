@@ -1,0 +1,46 @@
+.pagination {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.page-btn {
+  width: 40px;
+  height: 40px;
+  border: solid 1px #e5e7eb;
+  background-color: #ffffff;
+  border-radius: 50%;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.active {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.next-prev-btn {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.disabled-prev {
+  background-image: url("../public/assets/icons/arrow-left-disabled.svg");
+  cursor: default;
+}
+
+.active-prev {
+  background-image: url("../public/assets/icons/arrow-left.svg");
+}
+.disabled-next {
+  background-image: url("../public/assets/icons/arrow-right-disabled.svg");
+  cursor: default;
+}
+
+.active-next {
+  background-image: url("../public/assets/icons/arrow-right.svg");
+}

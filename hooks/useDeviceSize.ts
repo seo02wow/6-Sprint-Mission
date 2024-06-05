@@ -1,7 +1,7 @@
 import { useMediaQuery } from "react-responsive";
 
 export default function useDeviceSize() {
-    let bestPageSizeCount: number = 3;
+  let bestPageSizeCount: number = 3;
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 1200px)",
@@ -10,7 +10,7 @@ export default function useDeviceSize() {
     query: "(min-width:768px) and (max-width:1200px)",
   });
   const isMobile = useMediaQuery({
-    query: "(max-width:767px)",
+    query: "(max-width:768px)",
   });
 
   if (isMobile) {
