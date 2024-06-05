@@ -31,26 +31,31 @@
     z-index: 1;
     font-size: 16px;
     font-weight: 400;
+    @media screen and (max-width: 767px) {
+      right: 0px;
+    }
+
+    .dropdown-common {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 130px;
+      height: 42px;
+      background-color: var(--white);
+      border: 1px solid var(--cool-gray200);
+      @media screen and (max-width: 1199px) {
+        width: 120px;
+      }
+      @media screen and (max-width: 767px) {
+        width: 100px;
+      }
+    }
 
     .dropdown-recent {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 130px;
-      height: 42px;
       border-radius: 12px 12px 0px 0px;
-      background-color: var(--white);
-      border: 1px solid var(--cool-gray200);
     }
     .dropdown-like {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 130px;
-      height: 42px;
-      background-color: var(--white);
       border-radius: 0px 0px 12px 12px;
-      border: 1px solid var(--cool-gray200);
     }
   }
 }

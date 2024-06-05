@@ -28,13 +28,13 @@ export default function DropDown({ onOrderChange }: DropDownProps) {
       {isOpen && (
         <div className={styles["dropdown-menu"]}>
           <div
-            className={styles["dropdown-recent"]}
+            className={`${styles["dropdown-recent"]} ${styles["dropdown-common"]}`}
             onClick={() => handleOptionClick("최신순")}
           >
             최신순
           </div>
           <div
-            className={styles["dropdown-like"]}
+            className={`${styles["dropdown-like"]} ${styles["dropdown-common"]}`}
             onClick={() => handleOptionClick("인기순")}
           >
             인기순
