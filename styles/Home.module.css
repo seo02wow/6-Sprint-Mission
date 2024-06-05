@@ -185,49 +185,10 @@
   right: -137px;
 }
 
-.footer {
-  background-color: #111827;
-  padding: 32px 104px 108px;
-}
-
-.footer-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.footer-codeit {
-  display: block;
-  margin: 0;
-  color: var(--gray200);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 19px;
-}
-
-.footer-center {
-  display: flex;
-  gap: 30px;
-}
-
-.footer-ic {
-  display: flex;
-  gap: 12px;
-}
-
-.footer-faq,
-.footer-privacy {
-  text-decoration: none;
-  color: #e5e7eb;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 19px;
-}
-
 /* 반응형 */
 /* @media (min-width: 1200px) {
   } */
-@media (min-width: 768px) and (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
   .logo-container {
     margin-left: 24px;
   }
@@ -302,7 +263,7 @@
     order: 2;
   }
 }
-@media (min-width: 375px) and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .logo-container {
     margin-left: 16px;
   }
