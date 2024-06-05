@@ -2,7 +2,8 @@
   position: relative;
 
   .dropdown {
-    padding: 12px 60px 12px 20px;
+    padding: 12px;
+    text-align: left;
     border: 1px solid var(--cool-gray200);
     background-color: var(--white);
     border-radius: 12px;
@@ -13,6 +14,16 @@
     background-image: url("../public/assets/icons/drop-down-toggle.svg");
     background-repeat: no-repeat;
     background-position: right 17px center;
+    @media screen and (max-width: 1199px) {
+      width: 120px;
+      background-position: right 17px center;
+    }
+    @media screen and (max-width: 767px) {
+      background-image: url("../public/assets/icons/drop-down-toggle-mobile.svg");
+      background-position: center;
+      width: 42px;
+      color: rgba(0, 0, 0, 0);
+    }
   }
 
   .dropdown-menu {

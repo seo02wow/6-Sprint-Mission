@@ -49,9 +49,9 @@ export default function Board() {
   useEffect(() => {
     const handleWindowResize = () => {
       const windowWidth = window.innerWidth;
-      if (windowWidth <= 768) {
+      if (windowWidth <= 767) {
         setBestPageSize(1);
-      } else if (windowWidth <= 1200) {
+      } else if (windowWidth <= 1199) {
         setBestPageSize(2);
       } else {
         setBestPageSize(3); // 기본값 3으로 설정
