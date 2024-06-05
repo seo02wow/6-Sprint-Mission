@@ -7,15 +7,17 @@ import ArticleList from "@/components/board/Article";
 import SearchForm from "@/components/common/SearchForm";
 import DropDown from "@/components/common/DropDown";
 import Link from "next/link";
+import useDeviceSize from "@/hooks/useDeviceSize";
 
 export default function Board() {
+  const { isDesktop, isMobile, isTablet, bestPageSizeCount } = useDeviceSize();
   const [articleList, setArticleList] = useState<Article[]>([]);
   const [bestArticleList, setBestArticleList] = useState<Article[]>([]);
   const [order, setOrder] = useState("recent");
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageSize, setPageSize] = useState(10); // 페이지 당 게시글 수
-  const [bestPageSize, setBestPageSize] = useState(3); // 베스트 게시글 수(반응형 필요)
+  const [bestPageSize, setBestPageSize] = useState(bestPageSizeCount); // 베스트 게시글 수(반응형 필요)
   const [totalPostCount, setTotalPostCount] = useState(0); // 총 게시글 수
 
   async function getArticleList() {
@@ -47,24 +49,14 @@ export default function Board() {
   }, [bestPageSize]);
 
   useEffect(() => {
-    const handleWindowResize = () => {
-      const windowWidth = window.innerWidth;
-      if (windowWidth <= 768) {
-        setBestPageSize(1);
-      } else if (windowWidth <= 1200) {
-        setBestPageSize(2);
-      } else {
-        setBestPageSize(3); // 기본값 3으로 설정
-      }
-    };
-
-    handleWindowResize(); // 초기 사이즈 설정
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, [bestPageSize]);
+    if (isMobile) {
+      setBestPageSize(1);
+    } else if (isTablet) {
+      setBestPageSize(2);
+    } else if (isDesktop) {
+      setBestPageSize(3);
+    }
+  }, [isMobile, isTablet, isDesktop]);
 
   return (
     <main className={styles.main}>
