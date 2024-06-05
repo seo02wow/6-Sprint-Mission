@@ -54,7 +54,7 @@ export default function Board() {
       } else if (windowWidth <= 1200) {
         setBestPageSize(2);
       } else {
-        setBestPageSize(3); // 기본값을 3으로 설정
+        setBestPageSize(3); // 기본값 3으로 설정
       }
     };
 
@@ -64,7 +64,7 @@ export default function Board() {
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
-  }, []);
+  }, [bestPageSize]);
 
   return (
     <main className={styles.main}>
