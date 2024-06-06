@@ -10,7 +10,15 @@ interface ArticleDetailProps {
 export default function ArticleDetail({ article }: ArticleDetailProps) {
   return (
     <section>
-      <h1 className={styles.title}>{article.title}</h1>
+      <div className={styles["title-plus-container"]}>
+        <h1 className={styles.title}>{article.title}</h1>
+        <Image
+          src="/assets/icons/plus-button.svg"
+          width={24}
+          height={24}
+          alt="프로필 기본 이미지"
+        />
+      </div>
       <div className={styles["profile-heart-container"]}>
         <div className={styles["profile-date-container"]}>
           <Image
