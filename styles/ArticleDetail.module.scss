@@ -1,0 +1,50 @@
+.title {
+  font-weight: 700;
+  font-size: 20px;
+}
+.profile-heart-container {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--cool-gray200);
+
+  .profile-date-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+
+    .nickname {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--cool-gray600);
+    }
+    .date {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--cool-gray400);
+    }
+  }
+}
+
+.heart-count-container {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  border-left: 1px solid var(--cool-gray200);
+  padding-left: 16px;
+  .like-count {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--cool-gray500);
+  }
+}
+.content-container {
+  margin: 16px 0 50px;
+  .content {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 20px;
+  }
+}
