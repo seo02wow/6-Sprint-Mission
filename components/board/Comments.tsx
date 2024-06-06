@@ -2,12 +2,18 @@ import { Comment } from "@/types/board";
 import styles from "@/styles/Comments.module.scss";
 import Image from "next/image";
 import getTimeAgo from "@/utils/getTimeAgo";
+import { useRouter } from "next/router";
 
 interface CommentsProps {
   comments: Comment[];
 }
 
 export default function Comments({ comments }: CommentsProps) {
+  const router = useRouter();
+
+  const handleButtonClick = () => {
+    router.push("/boards");
+  };
   return (
     <section className={styles["comments-section"]}>
       {comments.length === 0 ? (
@@ -40,7 +46,7 @@ export default function Comments({ comments }: CommentsProps) {
           </div>
         ))
       )}
-      <button className={styles["go-back-button"]}>
+      <button className={styles["go-back-button"]} onClick={handleButtonClick}>
         목록으로 돌아가기
         <div className={styles["image-container"]}>
           <Image src="/assets/icons/back-button.svg" alt="돌아가기" fill />
