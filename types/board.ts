@@ -15,3 +15,16 @@ export default interface ArticleList {
   totalCount: number;
   list: Article[];
 }
+
+export interface Comment {
+  writer: Writer;
+  updatedAt: string;
+  createdAt: string;
+  content: string;
+  id: number;
+}
+
+export interface CommentList {
+  nextCursor?: number;
+  list: Comment[];
+}

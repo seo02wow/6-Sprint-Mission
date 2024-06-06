@@ -1,0 +1,78 @@
+.comments-section {
+  min-height: 200px;
+  width: 100%;
+  .none-comment-image {
+    position: relative;
+    width: 151px;
+    height: 195px;
+    margin: 0 auto;
+  }
+  .comment-container {
+    border-bottom: 1px solid var(--cool-gray200);
+    margin-top: 24px;
+
+    .content-button-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .comment-content {
+        font-size: 14px;
+        font-weight: 400;
+        color: var(--cool-gray800);
+      }
+
+      .plus-button {
+        background: url("../public/assets/icons/plus-button.svg") no-repeat;
+        width: 24px;
+        height: 24px;
+        border: none;
+      }
+    }
+    .profile-container {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 24px;
+
+      .nickname-date-container {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        .nickname {
+          font-size: 12px;
+          font-weight: 400;
+          color: var(--cool-gray600);
+        }
+        .date {
+          font-size: 12px;
+          font-weight: 400;
+          color: var(--cool-gray400);
+        }
+      }
+    }
+  }
+
+  .go-back-button {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 600;
+    width: 240px;
+    height: 48px;
+    border-radius: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 40px auto 0;
+    .image-container {
+      position: relative;
+      width: 24px;
+      height: 24px;
+    }
+  }
+}

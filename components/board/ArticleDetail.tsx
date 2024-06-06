@@ -16,7 +16,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
           src="/assets/icons/plus-button.svg"
           width={24}
           height={24}
-          alt="프로필 기본 이미지"
+          alt="플러스 버튼"
         />
       </div>
       <div className={styles["profile-heart-container"]}>
