@@ -3,6 +3,7 @@ import axios from "@/lib/axios";
 import { Article } from "@/types/board";
 import { GetStaticPropsContext } from "next";
 import styles from "@/styles/boardDetail.module.scss";
+import CommentInput from "@/components/board/CommentInput";
 
 export async function getStaticPaths() {
   const res = await axios.get("/articles");
@@ -36,6 +37,7 @@ export default function BoardDetail({ article }: BoardDetailProps) {
   return (
     <main className={styles.main}>
       <ArticleDetail article={article} />
+      <CommentInput />
     </main>
   );
 }
