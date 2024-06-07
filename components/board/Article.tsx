@@ -61,7 +61,7 @@ export default function ArticleList() {
   const [order, setOrder] = useState<Order>(Order.Recent);
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1); // 현재 페이지
-  const [pageSize, setPageSize] = useState(10); // 페이지 당 게시글 수
+  const [pageSize, setPageSize] = useState(8); // 페이지 당 게시글 수
   const [totalPostCount, setTotalPostCount] = useState(0); // 총 게시글 수
 
   async function getArticleList() {

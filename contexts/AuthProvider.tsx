@@ -9,6 +9,7 @@ import axios from "@/lib/axios";
 import { LoginValues } from "@/types/login";
 import { useRouter } from "next/router";
 import { setCookie } from "cookies-next";
+import { User } from "@/types/user";
 
 interface AuthContextType {
   user: any;
@@ -27,7 +28,10 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<{
+    user: User | null;
+    isPending: boolean;
+  }>({
     user: null,
     isPending: true,
   });
@@ -37,10 +41,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
       ...prevValues,
       isPending: true,
     }));
-    let nextUser: any;
+    let nextUser: User | null = null;
     try {
       const res = await axios.get("/users/me");
-      nextUser = res.data;
+      const userData = res.data;
+
+      nextUser = {
+        id: userData.id,
+        image: userData.image,
+        nickname: userData.nickname,
+        updatedAt: userData.updatedAt,
+        createdAt: userData.createdAt,
+      };
     } catch (e: any) {
       if (e.response?.status === 401) {
         console.log("토큰만료");
@@ -61,11 +73,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email,
         password,
       });
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken, user } = response.data;
+
+      // 사용자 데이터를 User 인터페이스에 맞춰서 매핑
+      const mappedUser: User = {
+        id: user.id,
+        image: user.image,
+        nickname: user.nickname,
+        updatedAt: user.updatedAt,
+        createdAt: user.createdAt,
+      };
+
       setCookie("accessToken", accessToken, { maxAge: 60 * 60 * 24 });
       setCookie("refreshToken", refreshToken, { maxAge: 60 * 60 * 24 });
-      await getMe();
-    } catch (e) {}
+
+      // 매핑된 사용자 데이터를 상태에 반영
+      setValues((prevValues) => ({
+        ...prevValues,
+        user: mappedUser,
+        isPending: false,
+      }));
+
+      console.log("로그인 완료");
+    } catch (e) {
+      console.error("로그인 에러:", e);
+    }
+
+    console.log("로그인 완료");
   }
 
   useEffect(() => {

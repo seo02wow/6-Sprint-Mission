@@ -57,7 +57,12 @@ export default function Header() {
         </div>
         <li className={styles["login-btn-container"]}>
           {user ? (
-            <>로그인 됨</>
+            <Image
+              src={user.image ? user.image : `/assets/images/profile.svg`}
+              width={40}
+              height={40}
+              alt="프로필"
+            />
           ) : (
             <Link href="/login" className={styles["login-btn"]}>
               로그인
