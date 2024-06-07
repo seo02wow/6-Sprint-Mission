@@ -1,8 +1,45 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/styles/login.module.scss";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { LoginValues } from "@/types/login";
+import axios from "@/lib/axios";
+import { useRouter } from "next/router";
 
 export default function Login() {
+  const [values, setValues] = useState<LoginValues>({
+    email: "",
+    password: "",
+  });
+  const router = useRouter();
+
+  const handleChange = (name: string, value: string) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { email, password } = values;
+
+    let result;
+    try {
+      result = await axios.post("/auth/signIn", {
+        email,
+        password,
+      });
+    } catch (e) {}
+    // NOTE - 로그인 후 메인 페이지로 이동
+    router.push("/");
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles["logo-wrapper"]}>
@@ -14,7 +51,7 @@ export default function Login() {
           />
         </Link>
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <section className={styles["input-container"]}>
           <label htmlFor="email" className={styles.label}>
             이메일
@@ -25,6 +62,8 @@ export default function Login() {
             name="email"
             placeholder="이메일을 입력해주세요"
             className={styles.input}
+            onChange={handleInputChange}
+            value={values.email}
           />
         </section>
         <section className={styles["input-container"]}>
@@ -38,6 +77,8 @@ export default function Login() {
               placeholder="비밀번호를 입력해주세요"
               name="password"
               className={styles.input}
+              onChange={handleInputChange}
+              value={values.password}
             />
             <Image
               alt="비밀번호 보이기"
@@ -48,7 +89,7 @@ export default function Login() {
             />
           </div>
         </section>
-        <button type="submit" disabled className={styles["login-button"]}>
+        <button type="submit" className={styles["login-button"]}>
           로그인
         </button>
       </form>

@@ -4,6 +4,7 @@ import styles from "@/styles/login.module.scss";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { SignupValues } from "@/types/signup";
 import axios from "@/lib/axios";
+import { useRouter } from "next/router";
 
 export default function Signup() {
   const [values, setValues] = useState<SignupValues>({
@@ -12,6 +13,7 @@ export default function Signup() {
     password: "",
     passwordConfirmation: "",
   });
+  const router = useRouter();
 
   const handleChange = (name: string, value: string) => {
     setValues((prevValues) => ({
@@ -37,7 +39,13 @@ export default function Signup() {
         password,
         passwordConfirmation,
       });
+      await axios.post("/auth/signIn", {
+        email,
+        password,
+      });
     } catch (e) {}
+    // NOTE - 로그인 후 메인 페이지로 이동
+    router.push("/");
   };
 
   return (
