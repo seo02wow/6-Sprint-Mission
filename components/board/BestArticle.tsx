@@ -12,7 +12,7 @@ interface BestArticleProps {
   article: Article;
 }
 
-function BestArticle({ article }: BestArticleProps) {
+function BestArticleCard({ article }: BestArticleProps) {
   return (
     <Link href={`addboard/${article.id}`}>
       <article className={styles["best-article-container"]}>
@@ -90,7 +90,7 @@ export default function BestArticleList() {
   return (
     <div className={styles["best-article-list-container"]}>
       {bestArticleList.map((article) => {
-        return <BestArticle key={article.id} article={article} />;
+        return <BestArticleCard key={article.id} article={article} />;
       })}
     </div>
   );

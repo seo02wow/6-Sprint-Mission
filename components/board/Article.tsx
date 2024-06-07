@@ -3,12 +3,17 @@ import styles from "@/styles/Article.module.scss";
 import Image from "next/image";
 import Link from "next/link";
 import { getDate } from "@/utils/getDate";
+import { useEffect, useState } from "react";
+import Pagination from "../common/Pagination";
+import SearchForm from "../common/SearchForm";
+import DropDown from "../common/DropDown";
+import axios from "@/lib/axios";
 
 interface ArticleProps {
   article: Article;
 }
 
-function MainArticle({ article }: ArticleProps) {
+function ArticleCard({ article }: ArticleProps) {
   return (
     <Link href={`addboard/${article.id}`}>
       <article className={styles["article-container"]}>
@@ -51,17 +56,52 @@ function MainArticle({ article }: ArticleProps) {
   );
 }
 
-interface ArticleListProps {
-  articleList: Article[];
-}
+export default function ArticleList() {
+  const [articleList, setArticleList] = useState<Article[]>([]);
+  const [order, setOrder] = useState("recent");
+  const [keyword, setKeyword] = useState("");
+  const [page, setPage] = useState(1); // 현재 페이지
+  const [pageSize, setPageSize] = useState(10); // 페이지 당 게시글 수
+  const [totalPostCount, setTotalPostCount] = useState(0); // 총 게시글 수
 
-export default function ArticleList({ articleList }: ArticleListProps) {
+  async function getArticleList() {
+    const res = await axios.get(
+      `/articles?page=${page}&pageSize=${pageSize}&orderBy=${order}&keyword=${keyword}`
+    );
+    const nextArticleList = res.data.list;
+    const nextTotalCount = res.data.totalCount;
+    setArticleList(nextArticleList);
+    setTotalPostCount(nextTotalCount);
+  }
+
+  useEffect(() => {
+    getArticleList();
+  }, [order, keyword, page, pageSize]);
+
   return (
-    <div className={styles["article-list-container"]}>
-      {articleList.map((article) => {
-        return <MainArticle key={article.id} article={article} />;
-      })}
-      <></>
-    </div>
+    <>
+      <section>
+        <div className={styles["heading-button-container"]}>
+          <h2 className={styles.heading}>게시글</h2>
+          <Link href="/post" className={styles["post-button"]}>
+            글쓰기
+          </Link>
+        </div>
+        <div className={styles["search-menu-container"]}>
+          <SearchForm keyword={keyword} onChangeKeyword={setKeyword} />
+          <DropDown onOrderChange={setOrder} />
+        </div>
+        <div className={styles["article-list-container"]}>
+          {articleList.map((article) => {
+            return <ArticleCard key={article.id} article={article} />;
+          })}
+        </div>
+      </section>
+      <Pagination
+        currentPage={page}
+        onPageChange={setPage}
+        totalPage={Math.ceil(totalPostCount / pageSize)}
+      />
+    </>
   );
 }
