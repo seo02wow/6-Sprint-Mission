@@ -11,14 +11,11 @@ import useDeviceSize from "@/hooks/useDeviceSize";
 import Pagination from "@/components/common/Paginaion";
 
 export default function Board() {
-  const { isDesktop, isMobile, isTablet, bestPageSizeCount } = useDeviceSize();
   const [articleList, setArticleList] = useState<Article[]>([]);
-  const [bestArticleList, setBestArticleList] = useState<Article[]>([]);
   const [order, setOrder] = useState("recent");
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageSize, setPageSize] = useState(10); // 페이지 당 게시글 수
-  const [bestPageSize, setBestPageSize] = useState(bestPageSizeCount); // 베스트 게시글 수(반응형 필요)
   const [totalPostCount, setTotalPostCount] = useState(0); // 총 게시글 수
 
   async function getArticleList() {
@@ -31,37 +28,15 @@ export default function Board() {
     setTotalPostCount(nextTotalCount);
   }
 
-  async function getBestArticleList() {
-    const res = await axios.get(
-      `/articles?pageSize=${bestPageSize}&orderBy=like`
-    );
-    const nextArticleList = res.data.list;
-    setBestArticleList(nextArticleList);
-  }
-
   useEffect(() => {
     getArticleList();
   }, [order, keyword, page, pageSize]);
-
-  useEffect(() => {
-    getBestArticleList();
-  }, [bestPageSize]);
-
-  useEffect(() => {
-    if (isMobile) {
-      setBestPageSize(1);
-    } else if (isTablet) {
-      setBestPageSize(2);
-    } else if (isDesktop) {
-      setBestPageSize(3);
-    }
-  }, [isMobile, isTablet, isDesktop]);
 
   return (
     <main className={styles.main}>
       <section className={styles["best-section"]}>
         <h2 className={styles.heading}>베스트 게시글</h2>
-        <BestArticleList bestArticleList={bestArticleList} />
+        <BestArticleList />
       </section>
       <section>
         <div className={styles["heading-button-container"]}>

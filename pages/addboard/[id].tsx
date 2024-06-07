@@ -6,18 +6,6 @@ import styles from "@/styles/boardDetail.module.scss";
 import CommentInput from "@/components/board/CommentInput";
 import Comments from "@/components/board/Comments";
 
-// export async function getStaticPaths() {
-//   const res = await axios.get("/articles");
-//   const articles = res.data.list;
-//   const paths = articles.map((article: Article) => ({
-//     params: { id: String(article.id) },
-//   }));
-
-//   return {
-//     paths,
-//     fallback: false,
-//   };
-// }
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const id = context.params?.id;
   const [articleRes, commentRes] = await Promise.all([
