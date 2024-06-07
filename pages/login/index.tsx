@@ -1,10 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/styles/login.module.scss";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { LoginValues } from "@/types/login";
-import axios from "@/lib/axios";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/AuthProvider";
 
 export default function Login() {
   const [values, setValues] = useState<LoginValues>({
@@ -12,6 +12,7 @@ export default function Login() {
     password: "",
   });
   const router = useRouter();
+  const { user, login } = useAuth(false);
 
   const handleChange = (name: string, value: string) => {
     setValues((prevValues) => ({
@@ -29,16 +30,16 @@ export default function Login() {
     e.preventDefault();
     const { email, password } = values;
 
-    let result;
-    try {
-      result = await axios.post("/auth/signIn", {
-        email,
-        password,
-      });
-    } catch (e) {}
+    await login({ email, password });
     // NOTE - 로그인 후 메인 페이지로 이동
     router.push("/");
   };
+
+  useEffect(() => {
+    if (user) {
+      router.push("/myPage");
+    }
+  }, [user, router]);
 
   return (
     <main className={styles.main}>

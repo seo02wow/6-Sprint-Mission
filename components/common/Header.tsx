@@ -4,9 +4,11 @@ import pandaLogoImg from "@/public/assets/images/panda-logo.svg";
 import pandaTextLogoImg from "@/public/assets/images/panda-text-logo.svg";
 import styles from "@/styles/Header.module.css";
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/AuthProvider";
 
 export default function Header() {
   const router = useRouter();
+  const { user } = useAuth();
 
   const isActive = (pathname: string): string => {
     return router.pathname.startsWith(pathname) ? "active-category" : "";
@@ -54,9 +56,13 @@ export default function Header() {
           </div>
         </div>
         <li className={styles["login-btn-container"]}>
-          <Link href="/login" className={styles["login-btn"]}>
-            로그인
-          </Link>
+          {user ? (
+            <>로그인 됨</>
+          ) : (
+            <Link href="/login" className={styles["login-btn"]}>
+              로그인
+            </Link>
+          )}
         </li>
       </ul>
     </nav>
