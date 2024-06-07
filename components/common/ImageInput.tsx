@@ -12,11 +12,14 @@ export default function ImageInput({ onChange, name }: ImageInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const nextValue = e.target.files?.item(0);
+    const nextValue = e.target.files?.[0];
     if (nextValue) {
       onChange(name, nextValue);
       const nextPreview = URL.createObjectURL(nextValue);
       setPreview(nextPreview);
+    } else {
+      onChange(name, null); // 파일이 없는 경우 null 전달
+      setPreview(null);
     }
   };
 

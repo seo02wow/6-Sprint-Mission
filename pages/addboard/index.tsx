@@ -2,11 +2,15 @@ import ImageInput from "@/components/common/ImageInput";
 import { useAuth } from "@/contexts/AuthProvider";
 import styles from "@/styles/AddBoard.module.scss";
 import { AddBoardValues } from "@/types/board";
-import { ChangeEvent, useEffect, useState } from "react";
+import { getCookie } from "cookies-next";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import axios from "@/lib/axios";
+import { useRouter } from "next/router";
 
 export default function AddBoard() {
-  const { user } = useAuth(false);
+  const { user } = useAuth(true);
   const [isAble, setIsAble] = useState(true);
+  const router = useRouter();
   const [values, setValues] = useState<AddBoardValues>({
     image: "",
     content: "",
@@ -27,6 +31,44 @@ export default function AddBoard() {
     handleChange(name, value);
   };
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const accessToken = getCookie("accessToken");
+    const { image, content, title } = values;
+    let imageUrl;
+
+    try {
+      if (image) {
+        const formData = new FormData();
+        formData.append("image", image);
+
+        const imageResult = await axios.post("/images/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        imageUrl = imageResult.data.url;
+      }
+
+      await axios.post(
+        "/articles",
+        { image: imageUrl, content, title },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      // Navigate to the boards page
+      router.push("/boards");
+    } catch (error) {
+      console.error("Failed to submit the form", error);
+    }
+  };
+
   useEffect(() => {
     if (values.title && values.content) {
       setIsAble(false);
@@ -36,7 +78,7 @@ export default function AddBoard() {
   }, [values]);
 
   return (
-    <main className={styles.main}>
+    <form className={styles.main} onSubmit={handleSubmit}>
       <section className={styles["post-section"]}>
         <h2 className={styles.heading}>게시글 쓰기</h2>
         <button
@@ -76,6 +118,6 @@ export default function AddBoard() {
         />
       </section>
       <ImageInput name="image" onChange={handleChange} />
-    </main>
+    </form>
   );
 }
