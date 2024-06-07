@@ -1,8 +1,45 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/styles/login.module.scss";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { SignupValues } from "@/types/signup";
+import axios from "@/lib/axios";
 
 export default function Signup() {
+  const [values, setValues] = useState<SignupValues>({
+    email: "",
+    nickname: "",
+    password: "",
+    passwordConfirmation: "",
+  });
+
+  const handleChange = (name: string, value: string) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const { email, nickname, password, passwordConfirmation } = values;
+
+    let result;
+    try {
+      result = await axios.post("/auth/signUp", {
+        email,
+        nickname,
+        password,
+        passwordConfirmation,
+      });
+    } catch (e) {}
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles["logo-wrapper"]}>
@@ -14,7 +51,7 @@ export default function Signup() {
           />
         </Link>
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <section className={styles["input-container"]}>
           <label htmlFor="email" className={styles.label}>
             이메일
@@ -25,6 +62,8 @@ export default function Signup() {
             name="email"
             placeholder="이메일을 입력해주세요"
             className={styles.input}
+            onChange={handleInputChange}
+            value={values.email}
           />
         </section>
         <section className={styles["input-container"]}>
@@ -37,6 +76,8 @@ export default function Signup() {
             name="nickname"
             placeholder="닉네임을 입력해주세요"
             className={styles.input}
+            onChange={handleInputChange}
+            value={values.nickname}
           />
         </section>
         <section className={styles["input-container"]}>
@@ -50,6 +91,8 @@ export default function Signup() {
               placeholder="비밀번호를 입력해주세요"
               name="password"
               className={styles.input}
+              onChange={handleInputChange}
+              value={values.password}
             />
             <Image
               alt="비밀번호 보이기"
@@ -71,6 +114,8 @@ export default function Signup() {
               placeholder="비밀번호를 다시 한 번 입력해주세요"
               name="passwordConfirmation"
               className={styles.input}
+              onChange={handleInputChange}
+              value={values.passwordConfirmation}
             />
             <Image
               alt="비밀번호 보이기"
@@ -81,7 +126,7 @@ export default function Signup() {
             />
           </div>
         </section>
-        <button type="submit" disabled className={styles["signup-button"]}>
+        <button type="submit" className={styles["signup-button"]}>
           회원가입
         </button>
       </form>
