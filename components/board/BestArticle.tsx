@@ -1,8 +1,8 @@
 import { Article } from "@/types/board";
 import styles from "@/styles/BestArticle.module.scss";
-import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import { getDate } from "@/utils/getDate";
 
 // NOTE - 베스트 게시글
 
@@ -49,9 +49,7 @@ function BestArticle({ article }: BestArticleProps) {
               <p className={styles["like-count"]}>{article.likeCount}</p>
             </div>
           </div>
-          <p className={styles.date}>
-            {moment(article.createdAt).format("YYYY.MM.DD")}
-          </p>
+          <p className={styles.date}>{getDate(article.createdAt)}</p>
         </div>
       </article>
     </Link>

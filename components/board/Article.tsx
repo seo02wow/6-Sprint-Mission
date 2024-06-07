@@ -1,8 +1,8 @@
 import { Article } from "@/types/board";
 import styles from "@/styles/Article.module.scss";
-import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import { getDate } from "@/utils/getDate";
 
 interface ArticleProps {
   article: Article;
@@ -34,9 +34,7 @@ function MainArticle({ article }: ArticleProps) {
               alt="프로필 기본 이미지"
             />
             <p className={styles.nickname}>{article.writer.nickname}</p>
-            <p className={styles.date}>
-              {moment(article.createdAt).format("YYYY.MM.DD")}
-            </p>
+            <p className={styles.date}>{getDate(article.createdAt)}</p>
           </div>
           <div className={styles["heart-container"]}>
             <Image

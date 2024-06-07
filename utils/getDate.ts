@@ -5,4 +5,8 @@ const getTimeAgo = (time: string) => {
   return moment(time).fromNow();
 };
 
-export default getTimeAgo;
+const getDate = (time: string) => {
+  return moment(time).format("YYYY.MM.DD");
+};
+
+export { getTimeAgo, getDate };

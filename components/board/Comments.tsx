@@ -1,7 +1,7 @@
 import { Comment } from "@/types/board";
 import styles from "@/styles/Comments.module.scss";
 import Image from "next/image";
-import getTimeAgo from "@/utils/getTimeAgo";
+import { getTimeAgo } from "@/utils/getDate";
 import { useRouter } from "next/router";
 
 interface CommentsProps {
