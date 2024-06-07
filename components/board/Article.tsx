@@ -8,6 +8,7 @@ import Pagination from "../common/Pagination";
 import SearchForm from "../common/SearchForm";
 import DropDown from "../common/DropDown";
 import axios from "@/lib/axios";
+import { Order, orderOptions } from "@/types/order";
 
 interface ArticleProps {
   article: Article;
@@ -55,10 +56,9 @@ function ArticleCard({ article }: ArticleProps) {
     </Link>
   );
 }
-
 export default function ArticleList() {
   const [articleList, setArticleList] = useState<Article[]>([]);
-  const [order, setOrder] = useState("recent");
+  const [order, setOrder] = useState<Order>(Order.Recent);
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1); // 현재 페이지
   const [pageSize, setPageSize] = useState(10); // 페이지 당 게시글 수
@@ -89,7 +89,7 @@ export default function ArticleList() {
         </div>
         <div className={styles["search-menu-container"]}>
           <SearchForm keyword={keyword} onChangeKeyword={setKeyword} />
-          <DropDown onOrderChange={setOrder} />
+          <DropDown selectedOption={order} setSelectedOption={setOrder} />
         </div>
         <div className={styles["article-list-container"]}>
           {articleList.map((article) => {
