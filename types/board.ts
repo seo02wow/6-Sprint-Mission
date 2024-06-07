@@ -28,3 +28,9 @@ export interface CommentList {
   nextCursor?: number;
   list: Comment[];
 }
+
+export interface AddBoardValues {
+  image?: string;
+  content: string;
+  title: string;
+}

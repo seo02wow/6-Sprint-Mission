@@ -83,7 +83,7 @@ export default function ArticleList() {
       <section>
         <div className={styles["heading-button-container"]}>
           <h2 className={styles.heading}>게시글</h2>
-          <Link href="/post" className={styles["post-button"]}>
+          <Link href="/addboard" className={styles["post-button"]}>
             글쓰기
           </Link>
         </div>

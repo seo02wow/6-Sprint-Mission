@@ -1,0 +1,55 @@
+.img-input-container {
+  margin: 16px 0 24px; /* 간격 조정 */
+  display: flex;
+  position: relative;
+}
+
+.img-input-label-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.img-input-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.img-input-label {
+  width: 282px;
+  height: 282px;
+  border-radius: 12px;
+  background-color: #f3f4f6;
+  border: none;
+  background-image: url("../public/assets/images/file-input-button.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+}
+
+.img-input {
+  display: none;
+}
+
+.preview {
+  width: 282px;
+  height: 282px;
+  position: absolute;
+  left: 306px; /* 인풋이랑 간격 조정 (인풋 가로 282, gap 24) */
+  bottom: 0;
+}
+
+.preview-delete-btn {
+  background-image: url("../public/assets/images/img-delete-btn.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  cursor: pointer;
+  width: 22px;
+  height: 24px;
+  border: none;
+  position: absolute;
+  /* 간격 조정 */
+  left: 556px;
+  top: 38px;
+}

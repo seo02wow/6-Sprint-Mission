@@ -123,7 +123,7 @@ export function useAuth(required?: boolean) {
   }
 
   useEffect(() => {
-    if (required && context.user && !context.isPending) {
+    if (required && !context.user && !context.isPending) {
       router.push("/login");
     }
   }, [context.user, context.isPending, required, router]);
