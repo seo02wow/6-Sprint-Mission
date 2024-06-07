@@ -20,6 +20,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     props: {
       article,
       comments,
+      articleId: id,
     },
   };
 }
@@ -27,13 +28,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 interface BoardDetailProps {
   article: Article;
   comments: Comment[];
+  articleId: string;
 }
 
-export default function BoardDetail({ article, comments }: BoardDetailProps) {
+export default function BoardDetail({
+  article,
+  comments,
+  articleId,
+}: BoardDetailProps) {
   return (
     <main className={styles.main}>
       <ArticleDetail article={article} />
-      <CommentInput />
+      <CommentInput articleId={articleId} />
       <Comments comments={comments} />
     </main>
   );

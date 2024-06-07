@@ -33,4 +33,11 @@
     font-weight: 600;
     margin-left: auto;
   }
+  .active-button {
+    background-color: var(--primary-color);
+
+    &:hover {
+      background-color: var(--button-hover-color);
+    }
+  }
 }
