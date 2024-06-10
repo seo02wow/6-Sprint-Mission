@@ -43,10 +43,10 @@
       height: 42px;
       background-color: var(--white);
       border: 1px solid var(--cool-gray200);
-      @media screen and (max-width: 1199px) {
+      @media screen and (max-width: 1200px) {
         width: 120px;
       }
-      @media screen and (max-width: 767px) {
+      @media screen and (max-width: 768px) {
         width: 100px;
       }
     }

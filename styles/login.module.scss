@@ -1,0 +1,95 @@
+.main {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.logo-wrapper {
+  position: relative;
+  width: 396px;
+  height: 132px;
+  margin: 60px auto 40px;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px; /*간격조정*/
+  position: relative;
+
+  .label {
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .input {
+    border: none;
+    background-color: var(--cool-gray100);
+    width: 100%;
+    height: 56px;
+    padding-left: 24px;
+    border-radius: 12px;
+
+    &::placeholder {
+      font-weight: 400;
+      font-size: 16px;
+      color: var(--cool-gray400);
+    }
+
+    &:focus {
+      outline-color: var(--primary-color);
+    }
+  }
+
+  .password-eye {
+    position: absolute;
+    right: 24px;
+    bottom: 16px;
+    cursor: pointer;
+  }
+}
+.login-button,
+.signup-button {
+  border: none;
+  width: 100%;
+  height: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--cool-gray400);
+  border-radius: 40px;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--white);
+}
+.easy-login-section {
+  margin: 24px 0;
+  .easy-login {
+    width: 100%;
+    height: 74px;
+    background-color: #e6f2ff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 23px;
+    margin-bottom: 24px;
+    .easy-login-icon {
+      display: flex;
+      gap: 16px;
+    }
+
+    .easy-login-a {
+      display: flex;
+    }
+  }
+  .move-signup-container {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 18px;
+    .move-signup,
+    .move-login {
+      color: var(--primary-color);
+      text-decoration-line: underline;
+    }
+  }
+}

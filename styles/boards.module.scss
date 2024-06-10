@@ -14,23 +14,3 @@
   font-weight: 700;
   margin-bottom: 24px;
 }
-.search-menu-container {
-  display: flex;
-  gap: 16px;
-}
-.heading-button-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  .post-button {
-    background-color: var(--primary-color);
-    color: var(--white);
-    width: 88px;
-    height: 42px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}

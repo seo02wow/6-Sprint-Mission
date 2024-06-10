@@ -1,44 +1,46 @@
 import styles from "@/styles/DropDown.module.scss";
 import { useRef, useState } from "react";
+import { Order, orderOptions } from "@/types/order";
 
 interface DropDownProps {
-  onOrderChange: (order: string) => void;
+  selectedOption: Order;
+  setSelectedOption: (option: Order) => void;
 }
 
-export default function DropDown({ onOrderChange }: DropDownProps) {
+export default function DropDown({
+  selectedOption,
+  setSelectedOption,
+}: DropDownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("최신순");
   const dropdownRef = useRef(null);
 
   const handleToggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = (option: Order) => {
     setSelectedOption(option);
-    onOrderChange(option === "최신순" ? "recent" : "like");
     setIsOpen(false);
   };
 
   return (
     <div ref={dropdownRef} className={styles["dropdown-container"]}>
       <button onClick={handleToggleDropdown} className={styles["dropdown"]}>
-        {selectedOption}
+        {orderOptions[selectedOption]}
       </button>
       {isOpen && (
         <div className={styles["dropdown-menu"]}>
-          <div
-            className={`${styles["dropdown-recent"]} ${styles["dropdown-common"]}`}
-            onClick={() => handleOptionClick("최신순")}
-          >
-            최신순
-          </div>
-          <div
-            className={`${styles["dropdown-like"]} ${styles["dropdown-common"]}`}
-            onClick={() => handleOptionClick("인기순")}
-          >
-            인기순
-          </div>
+          {Object.values(Order).map((option) => (
+            <div
+              key={option}
+              className={`${styles[`dropdown-${option}`]} ${
+                styles["dropdown-common"]
+              }`}
+              onClick={() => handleOptionClick(option)}
+            >
+              {orderOptions[option]}
+            </div>
+          ))}
         </div>
       )}
     </div>

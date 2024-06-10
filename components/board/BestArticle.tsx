@@ -1,16 +1,18 @@
 import { Article } from "@/types/board";
 import styles from "@/styles/BestArticle.module.scss";
-import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import { getDate } from "@/utils/getDate";
+import useDeviceSize from "@/hooks/useDeviceSize";
+import { useEffect, useState } from "react";
+import axios from "@/lib/axios";
 
 // NOTE - 베스트 게시글
-
 interface BestArticleProps {
   article: Article;
 }
 
-function BestArticle({ article }: BestArticleProps) {
+function BestArticleCard({ article }: BestArticleProps) {
   return (
     <Link href={`addboard/${article.id}`}>
       <article className={styles["best-article-container"]}>
@@ -49,9 +51,7 @@ function BestArticle({ article }: BestArticleProps) {
               <p className={styles["like-count"]}>{article.likeCount}</p>
             </div>
           </div>
-          <p className={styles.date}>
-            {moment(article.createdAt).format("YYYY.MM.DD")}
-          </p>
+          <p className={styles.date}>{getDate(article.createdAt)}</p>
         </div>
       </article>
     </Link>
@@ -59,17 +59,38 @@ function BestArticle({ article }: BestArticleProps) {
 }
 
 // NOTE - 베스트 게시글 리스트
-interface BestArticleListProps {
-  bestArticleList: Article[];
-}
 
-export default function BestArticleList({
-  bestArticleList,
-}: BestArticleListProps) {
+export default function BestArticleList() {
+  const { isDesktop, isMobile, isTablet, bestPageSizeCount } = useDeviceSize();
+  const [bestArticleList, setBestArticleList] = useState<Article[]>([]);
+  const [bestPageSize, setBestPageSize] = useState(bestPageSizeCount);
+
+  async function getBestArticleList() {
+    const res = await axios.get(
+      `/articles?pageSize=${bestPageSize}&orderBy=like`
+    );
+    const nextArticleList = res.data.list;
+    setBestArticleList(nextArticleList);
+  }
+
+  useEffect(() => {
+    getBestArticleList();
+  }, [bestPageSize]);
+
+  useEffect(() => {
+    if (isMobile) {
+      setBestPageSize(1);
+    } else if (isTablet) {
+      setBestPageSize(2);
+    } else if (isDesktop) {
+      setBestPageSize(3);
+    }
+  }, [isMobile, isTablet, isDesktop]);
+
   return (
     <div className={styles["best-article-list-container"]}>
       {bestArticleList.map((article) => {
-        return <BestArticle key={article.id} article={article} />;
+        return <BestArticleCard key={article.id} article={article} />;
       })}
     </div>
   );
