@@ -1,41 +1,46 @@
 import ArticleDetail from "@/components/board/ArticleDetail";
 import axios from "@/lib/axios";
-import { Article } from "@/types/board";
-import { GetStaticPropsContext } from "next";
+import { Article, Comment } from "@/types/board";
+import { GetServerSidePropsContext } from "next";
 import styles from "@/styles/boardDetail.module.scss";
+import CommentInput from "@/components/board/CommentInput";
+import Comments from "@/components/board/Comments";
 
-export async function getStaticPaths() {
-  const res = await axios.get("/articles");
-  const articles = res.data.list;
-  const paths = articles.map((article: Article) => ({
-    params: { id: String(article.id) },
-  }));
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const id = context.params?.id;
+  const [articleRes, commentRes] = await Promise.all([
+    axios.get(`/articles/${id}`),
+    axios.get(`/articles/${id}/comments?limit=100`),
+  ]);
 
-  return {
-    paths,
-    fallback: false,
-  };
-}
+  const article = articleRes.data;
+  const comments = commentRes.data.list;
 
-export async function getStaticProps(context: GetStaticPropsContext) {
-  const id: string = context.params?.id as string;
-  const res = await axios.get(`/articles/${id}`);
-  const article = res.data;
   return {
     props: {
       article,
+      comments,
+      articleId: id,
     },
   };
 }
 
 interface BoardDetailProps {
   article: Article;
+  comments: Comment[];
+  articleId: string;
 }
 
-export default function BoardDetail({ article }: BoardDetailProps) {
+export default function BoardDetail({
+  article,
+  comments,
+  articleId,
+}: BoardDetailProps) {
   return (
     <main className={styles.main}>
       <ArticleDetail article={article} />
+      <CommentInput articleId={articleId} />
+      <Comments comments={comments} />
     </main>
   );
 }

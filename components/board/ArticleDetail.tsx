@@ -1,7 +1,7 @@
 import { Article } from "@/types/board";
 import Image from "next/image";
 import styles from "@/styles/ArticleDetail.module.scss";
-import moment from "moment";
+import { getDate } from "@/utils/getDate";
 
 interface ArticleDetailProps {
   article: Article;
@@ -10,7 +10,15 @@ interface ArticleDetailProps {
 export default function ArticleDetail({ article }: ArticleDetailProps) {
   return (
     <section>
-      <h1 className={styles.title}>{article.title}</h1>
+      <div className={styles["title-plus-container"]}>
+        <h1 className={styles.title}>{article.title}</h1>
+        <Image
+          src="/assets/icons/plus-button.svg"
+          width={24}
+          height={24}
+          alt="플러스 버튼"
+        />
+      </div>
       <div className={styles["profile-heart-container"]}>
         <div className={styles["profile-date-container"]}>
           <Image
@@ -20,9 +28,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
             alt="프로필 기본 이미지"
           />
           <p className={styles.nickname}>{article.writer.nickname}</p>
-          <p className={styles.date}>
-            {moment(article.createdAt).format("YYYY.MM.DD")}
-          </p>
+          <p className={styles.date}>{getDate(article.createdAt)}</p>
         </div>
         <div className={styles["heart-count-container"]}>
           <Image
