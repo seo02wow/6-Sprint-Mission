@@ -54,10 +54,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     } catch (e: any) {
       if (e.response?.status === 401) {
         console.log("토큰만료");
+        try {
+          const refreshToken = getCookie("refreshToken");
+          const res = await axios.get("/auth/refresh-token", {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          });
+          const newToken = res.data.accessToken;
+          setCookie("accessToken", newToken, { maxAge: 60 * 60 * 24 });
+        } catch (e) {
+          console.error("토큰 재발급 실패 :", e);
+        }
         return;
       }
     } finally {
-      console.log(">>>>> user : " + nextUser);
       setUser(nextUser);
       setIsPending(false);
     }
