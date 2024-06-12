@@ -1,6 +1,6 @@
 import styles from "@/styles/boards.module.scss";
-import BestArticleList from "@/components/board/BestArticle";
 import ArticleList from "@/components/board/ArticleList";
+import BestArticleList from "@/components/board/BestArticleList";
 
 export default function Board() {
   return (
