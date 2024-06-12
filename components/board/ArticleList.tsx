@@ -18,9 +18,14 @@ export default function ArticleList() {
   const [totalPostCount, setTotalPostCount] = useState(0); // 총 게시글 수
 
   async function getArticleList() {
-    const res = await axios.get(
-      `/articles?page=${page}&pageSize=${pageSize}&orderBy=${order}&keyword=${keyword}`
-    );
+    const res = await axios.get(`/articles`, {
+      params: {
+        page,
+        pageSize,
+        orderBy: order,
+        keyword,
+      },
+    });
     const nextArticleList = res.data.list;
     const nextTotalCount = res.data.totalCount;
     setArticleList(nextArticleList);
