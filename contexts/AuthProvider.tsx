@@ -3,6 +3,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import axios from "@/lib/axios";
@@ -118,12 +119,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 export function useAuth(required?: boolean) {
   const context = useContext(AuthContext);
   const router = useRouter();
+  const ref = useRef(false);
+
   if (!context) {
     throw new Error("반드시 AuthProvider 안에서 사용해야 합니다.");
   }
 
   useEffect(() => {
     if (required && !context.user && !context.isPending) {
+      if (!ref.current) {
+        alert("로그인이 필요합니다.");
+        ref.current = true;
+      }
       router.push("/login");
     }
   }, [context.user, context.isPending, required, router]);
