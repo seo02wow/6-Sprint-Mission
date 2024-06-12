@@ -33,7 +33,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isPending, setIsPending] = useState(true);
 
   async function getMe() {
-    console.log(">>>>>>>>>>>>> getMe ");
     setIsPending(true);
     let nextUser: User | null = null;
     try {
