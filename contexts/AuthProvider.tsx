@@ -36,14 +36,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsPending(true);
     let nextUser: User | null = null;
     try {
-      const accessToken = getCookie("accessToken");
-      const res = await axios.get("/users/me", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`, // 헤더에 토큰 포함
-        },
-      });
+      const res = await axios.get("/users/me");
       const userData = res.data;
-
       nextUser = {
         id: userData.id,
         image: userData.image,
@@ -51,23 +45,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         updatedAt: userData.updatedAt,
         createdAt: userData.createdAt,
       };
-    } catch (e: any) {
-      if (e.response?.status === 401) {
-        console.log("토큰만료");
-        try {
-          const refreshToken = getCookie("refreshToken");
-          const res = await axios.get("/auth/refresh-token", {
-            headers: {
-              Authorization: `Bearer ${refreshToken}`,
-            },
-          });
-          const newToken = res.data.accessToken;
-          setCookie("accessToken", newToken, { maxAge: 60 * 60 * 24 });
-        } catch (e) {
-          console.error("토큰 재발급 실패 :", e);
-        }
-        return;
-      }
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
     } finally {
       setUser(nextUser);
       setIsPending(false);
