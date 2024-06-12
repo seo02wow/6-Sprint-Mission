@@ -9,7 +9,7 @@ import {
 import axios from "@/lib/axios";
 import { LoginValues } from "@/types/login";
 import { useRouter } from "next/router";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { User } from "@/types/user";
 
 interface AuthContextType {
@@ -33,10 +33,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isPending, setIsPending] = useState(true);
 
   async function getMe() {
+    console.log(">>>>>>>>>>>>> getMe ");
     setIsPending(true);
     let nextUser: User | null = null;
     try {
-      const res = await axios.get("/users/me");
+      const accessToken = getCookie("accessToken");
+      const res = await axios.get("/users/me", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`, // 헤더에 토큰 포함
+        },
+      });
       const userData = res.data;
 
       nextUser = {
@@ -52,6 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return;
       }
     } finally {
+      console.log(">>>>> user : " + nextUser);
       setUser(nextUser);
       setIsPending(false);
     }
@@ -88,6 +95,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     console.log("로그인 완료");
   }
+
   useEffect(() => {
     getMe();
   }, []);
@@ -108,11 +116,7 @@ export function useAuth(required?: boolean) {
   }
 
   useEffect(() => {
-    console.log(">>>>");
-    console.log(required);
-    console.log(context.user);
-    console.log(context.isPending);
-    if (required && !context.user && !context.isPending) {
+    if (required && !getCookie("accessToken") && !context.isPending) {
       if (!ref.current) {
         alert("로그인이 필요합니다.");
         ref.current = true;
