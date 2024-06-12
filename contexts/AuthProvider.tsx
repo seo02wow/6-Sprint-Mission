@@ -29,19 +29,11 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [values, setValues] = useState<{
-    user: User | null;
-    isPending: boolean;
-  }>({
-    user: null,
-    isPending: true,
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [isPending, setIsPending] = useState(true);
 
   async function getMe() {
-    setValues((prevValues) => ({
-      ...prevValues,
-      isPending: true,
-    }));
+    setIsPending(true);
     let nextUser: User | null = null;
     try {
       const res = await axios.get("/users/me");
@@ -60,11 +52,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         return;
       }
     } finally {
-      setValues((prevValues) => ({
-        ...prevValues,
-        user: nextUser,
-        isPending: false,
-      }));
+      setUser(nextUser);
+      setIsPending(false);
     }
   }
 
@@ -89,11 +78,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setCookie("refreshToken", refreshToken, { maxAge: 60 * 60 * 24 });
 
       // 매핑된 사용자 데이터를 상태에 반영
-      setValues((prevValues) => ({
-        ...prevValues,
-        user: mappedUser,
-        isPending: false,
-      }));
+      setUser(mappedUser);
+      setIsPending(false);
 
       console.log("로그인 완료");
     } catch (e) {
@@ -102,20 +88,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     console.log("로그인 완료");
   }
-
   useEffect(() => {
     getMe();
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ user: values.user, isPending: values.isPending, login }}
-    >
+    <AuthContext.Provider value={{ user, isPending, login }}>
       {children}
     </AuthContext.Provider>
   );
 }
-
 export function useAuth(required?: boolean) {
   const context = useContext(AuthContext);
   const router = useRouter();
@@ -126,6 +108,10 @@ export function useAuth(required?: boolean) {
   }
 
   useEffect(() => {
+    console.log(">>>>");
+    console.log(required);
+    console.log(context.user);
+    console.log(context.isPending);
     if (required && !context.user && !context.isPending) {
       if (!ref.current) {
         alert("로그인이 필요합니다.");
