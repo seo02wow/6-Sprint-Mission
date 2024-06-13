@@ -31,13 +31,12 @@ export default function Login() {
     const { email, password } = values;
 
     await login({ email, password });
-    // NOTE - 로그인 후 메인 페이지로 이동
-    router.push("/");
   };
 
+  // NOTE - 로그인 상태면 메인페이지로 리다이렉트
   useEffect(() => {
     if (user) {
-      router.push("/myPage");
+      router.push("/");
     }
   }, [user, router]);
 

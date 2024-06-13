@@ -49,7 +49,7 @@ export default function Signup() {
 
   useEffect(() => {
     if (user) {
-      router.push("/myPage");
+      router.push("/");
     }
   }, [user, router]);
 

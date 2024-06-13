@@ -15,6 +15,7 @@ export default function AddImage({ onChange, name }: ImageInputProps) {
     const { files } = e.target;
 
     if (!files || files.length === 0) {
+      console.log("이게 언제 실행되는 거지");
       return;
     }
     const file = files[0];
