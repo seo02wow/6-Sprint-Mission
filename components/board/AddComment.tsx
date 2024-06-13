@@ -16,16 +16,17 @@ export default function AddComment({ articleId }: CommentInputProps) {
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
     const { value } = e.target;
     setContent(value);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      router.push("/login");
-    }
     let result;
     const accessToken = getCookie("accessToken");
     try {
