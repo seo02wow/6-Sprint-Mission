@@ -25,11 +25,13 @@ export default function BestArticleList() {
   useEffect(() => {
     if (isMobile) {
       setBestPageSize(1);
-    } else if (isTablet) {
-      setBestPageSize(2);
-    } else if (isDesktop) {
-      setBestPageSize(3);
+      return;
     }
+    if (isTablet) {
+      setBestPageSize(2);
+      return;
+    }
+    setBestPageSize(3);
   }, [isMobile, isTablet, isDesktop]);
 
   return (
