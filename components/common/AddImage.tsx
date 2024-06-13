@@ -6,7 +6,7 @@ interface ImageInputProps {
   name: string;
 }
 
-export default function ImageInput({ onChange, name }: ImageInputProps) {
+export default function AddImage({ onChange, name }: ImageInputProps) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
