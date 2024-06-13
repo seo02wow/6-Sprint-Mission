@@ -9,7 +9,7 @@ interface CommentInputProps {
   articleId: string;
 }
 
-export default function CommentInput({ articleId }: CommentInputProps) {
+export default function AddComment({ articleId }: CommentInputProps) {
   const [content, setContent] = useState("");
   const [isAble, setIsAble] = useState(true);
   const { user } = useAuth();
