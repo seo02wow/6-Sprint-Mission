@@ -12,15 +12,16 @@ export default function AddImage({ onChange, name }: ImageInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const nextFile = e.target.files?.[0];
-    if (nextFile) {
-      onChange(name, nextFile);
-      const nextPreview = URL.createObjectURL(nextFile);
-      setPreview(nextPreview);
-    } else {
-      onChange(name, null); // 파일이 없는 경우 null 전달
-      setPreview(null);
+    const { files } = e.target;
+
+    if (!files || files.length === 0) {
+      return;
     }
+    const file = files[0];
+    onChange(name, file);
+
+    const nextPreview = URL.createObjectURL(file);
+    setPreview(nextPreview);
   };
 
   const handleClearClick = () => {
