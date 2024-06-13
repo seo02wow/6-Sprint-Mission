@@ -16,8 +16,8 @@ export default function AddComment({ articleId }: CommentInputProps) {
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const nextValue = e.target.value;
-    setContent(nextValue);
+    const { value } = e.target;
+    setContent(value);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
