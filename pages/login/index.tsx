@@ -1,36 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/styles/login.module.scss";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { LoginValues } from "@/types/login";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthProvider";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { EMAIL_REGEX } from "@/constants/emailRegex";
 
 export default function Login() {
-  const [values, setValues] = useState<LoginValues>({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<LoginValues>({
+    mode: "onChange",
   });
   const router = useRouter();
   const { user, login } = useAuth(false);
 
-  const handleChange = (name: string, value: string) => {
-    setValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    handleChange(name, value);
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { email, password } = values;
-
-    await login({ email, password });
+  const onSubmit: SubmitHandler<LoginValues> = async (data) => {
+    await login(data);
   };
 
   // NOTE - 로그인 상태면 메인페이지로 리다이렉트
@@ -51,20 +41,31 @@ export default function Login() {
           />
         </Link>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles["input-container"]}>
           <label htmlFor="email" className={styles.label}>
             이메일
           </label>
           <input
+            {...register("email", {
+              required: "이메일을 입력해주세요.",
+              pattern: {
+                value: EMAIL_REGEX,
+                message: "잘못된 이메일 형식입니다.",
+              },
+            })}
             type="email"
             id="email"
-            name="email"
             placeholder="이메일을 입력해주세요"
-            className={styles.input}
-            onChange={handleInputChange}
-            value={values.email}
+            className={`${styles.input} ${
+              errors.email
+                ? styles["error-border"]
+                : styles["none-error-border"]
+            }`}
           />
+          {errors.email && (
+            <p className={styles["error-message"]}>{errors.email.message}</p>
+          )}
         </section>
         <section className={styles["input-container"]}>
           <label htmlFor="password" className={styles.label}>
@@ -72,13 +73,21 @@ export default function Login() {
           </label>
           <div>
             <input
+              {...register("password", {
+                required: "비밀번호를 작성해주세요",
+                minLength: {
+                  value: 8,
+                  message: "비밀번호를 8자 이상 입력해주세요",
+                },
+              })}
               type="password"
               id="password"
               placeholder="비밀번호를 입력해주세요"
-              name="password"
-              className={styles.input}
-              onChange={handleInputChange}
-              value={values.password}
+              className={`${styles.input} ${
+                errors.password
+                  ? styles["error-border"]
+                  : styles["none-error-border"]
+              }`}
             />
             <Image
               alt="비밀번호 보이기"
@@ -88,8 +97,17 @@ export default function Login() {
               className={styles["password-eye"]}
             />
           </div>
+          {errors.password && (
+            <p className={styles["error-message"]}>{errors.password.message}</p>
+          )}
         </section>
-        <button type="submit" className={styles["login-button"]}>
+        <button
+          type="submit"
+          className={`${styles["login-button"]} ${
+            isValid && styles["able-button"]
+          }`}
+          disabled={!isValid}
+        >
           로그인
         </button>
       </form>
