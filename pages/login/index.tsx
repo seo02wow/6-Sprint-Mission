@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/styles/login.module.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { LoginValues } from "@/types/login";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthProvider";
@@ -16,11 +16,16 @@ export default function Login() {
   } = useForm<LoginValues>({
     mode: "onChange",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { user, login } = useAuth(false);
 
   const onSubmit: SubmitHandler<LoginValues> = async (data) => {
     await login(data);
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword((prevValue) => !prevValue);
   };
 
   // NOTE - 로그인 상태면 메인페이지로 리다이렉트
@@ -80,7 +85,7 @@ export default function Login() {
                   message: "비밀번호를 8자 이상 입력해주세요",
                 },
               })}
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               placeholder="비밀번호를 입력해주세요"
               className={`${styles.input} ${
@@ -93,8 +98,13 @@ export default function Login() {
               alt="비밀번호 보이기"
               width={24}
               height={24}
-              src="/assets/images/password-eye-off.svg"
+              src={
+                showPassword
+                  ? "/assets/images/password-eye-on.svg"
+                  : "/assets/images/password-eye-off.svg"
+              }
               className={styles["password-eye"]}
+              onClick={handleShowPassword}
             />
           </div>
           {errors.password && (
