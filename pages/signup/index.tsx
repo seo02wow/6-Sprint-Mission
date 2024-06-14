@@ -6,45 +6,39 @@ import { SignupValues } from "@/types/signup";
 import axios from "@/lib/axios";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/AuthProvider";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { EMAIL_REGEX } from "@/constants/emailRegex";
 
 export default function Signup() {
-  const [values, setValues] = useState<SignupValues>({
-    email: "",
-    nickname: "",
-    password: "",
-    passwordConfirmation: "",
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm<SignupValues>({
+    mode: "onChange",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordConfirmation, setShowPasswordConfirmation] =
+    useState(false);
   const router = useRouter();
-  const { user, login } = useAuth(false);
+  const { user } = useAuth(false);
 
-  const handleChange = (name: string, value: string) => {
-    setValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-  };
-
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    handleChange(name, value);
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { email, nickname, password, passwordConfirmation } = values;
-
+  const onSubmit: SubmitHandler<SignupValues> = async (data) => {
     let result;
     try {
-      result = await axios.post("/auth/signUp", {
-        email,
-        nickname,
-        password,
-        passwordConfirmation,
-      });
-      await login({ email, password });
+      result = await axios.post("/auth/signUp", data);
     } catch (e) {}
-    // NOTE - 로그인 후 메인 페이지로 이동
-    router.push("/");
+    // NOTE - 회원가입 후 로그인 페이지로 이동
+    router.push("/login");
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword((prevValue) => !prevValue);
+  };
+
+  const handleShowPasswordConfirmation = () => {
+    setShowPasswordConfirmation((prevValue) => !prevValue);
   };
 
   useEffect(() => {
@@ -64,34 +58,50 @@ export default function Signup() {
           />
         </Link>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <section className={styles["input-container"]}>
           <label htmlFor="email" className={styles.label}>
             이메일
           </label>
           <input
+            {...register("email", {
+              required: "이메일을 입력해주세요.",
+              pattern: {
+                value: EMAIL_REGEX,
+                message: "잘못된 이메일 형식입니다.",
+              },
+            })}
             type="email"
             id="email"
-            name="email"
             placeholder="이메일을 입력해주세요"
-            className={styles.input}
-            onChange={handleInputChange}
-            value={values.email}
+            className={`${styles.input} ${
+              errors.email
+                ? styles["error-border"]
+                : styles["none-error-border"]
+            }`}
           />
+          {errors.email && (
+            <p className={styles["error-message"]}>{errors.email.message}</p>
+          )}
         </section>
         <section className={styles["input-container"]}>
           <label htmlFor="nickname" className={styles.label}>
             닉네임
           </label>
           <input
+            {...register("nickname", { required: true })}
             type="text"
             id="nickname"
-            name="nickname"
             placeholder="닉네임을 입력해주세요"
-            className={styles.input}
-            onChange={handleInputChange}
-            value={values.nickname}
+            className={`${styles.input} ${
+              errors.nickname
+                ? styles["error-border"]
+                : styles["none-error-border"]
+            }`}
           />
+          {errors.nickname && (
+            <p className={styles["error-message"]}>닉네임을 작성해주세요</p>
+          )}
         </section>
         <section className={styles["input-container"]}>
           <label htmlFor="password" className={styles.label}>
@@ -99,22 +109,38 @@ export default function Signup() {
           </label>
           <div>
             <input
-              type="password"
+              {...register("password", {
+                required: "비밀번호를 작성해주세요",
+                minLength: {
+                  value: 8,
+                  message: "비밀번호를 8자 이상 입력해주세요",
+                },
+              })}
+              type={showPassword ? "text" : "password"}
               id="password"
               placeholder="비밀번호를 입력해주세요"
-              name="password"
-              className={styles.input}
-              onChange={handleInputChange}
-              value={values.password}
+              className={`${styles.input} ${
+                errors.password
+                  ? styles["error-border"]
+                  : styles["none-error-border"]
+              }`}
             />
             <Image
               alt="비밀번호 보이기"
               width={24}
               height={24}
-              src="/assets/images/password-eye-off.svg"
+              src={
+                showPassword
+                  ? "/assets/images/password-eye-on.svg"
+                  : "/assets/images/password-eye-off.svg"
+              }
               className={styles["password-eye"]}
+              onClick={handleShowPassword}
             />
           </div>
+          {errors.password && (
+            <p className={styles["error-message"]}>{errors.password.message}</p>
+          )}
         </section>
         <section className={styles["input-container"]}>
           <label htmlFor="passwordConfirmation" className={styles.label}>
@@ -122,24 +148,47 @@ export default function Signup() {
           </label>
           <div>
             <input
-              type="password"
+              {...register("passwordConfirmation", {
+                required: "비밀번호를 다시 작성해주세요",
+                validate: (value) =>
+                  value === watch("password") ||
+                  "비밀번호가 일치하지 않습니다.",
+              })}
+              type={showPasswordConfirmation ? "text" : "password"}
               id="passwordConfirmation"
               placeholder="비밀번호를 다시 한 번 입력해주세요"
-              name="passwordConfirmation"
-              className={styles.input}
-              onChange={handleInputChange}
-              value={values.passwordConfirmation}
+              className={`${styles.input} ${
+                errors.passwordConfirmation
+                  ? styles["error-border"]
+                  : styles["none-error-border"]
+              }`}
             />
             <Image
               alt="비밀번호 보이기"
               width={24}
               height={24}
-              src="/assets/images/password-eye-off.svg"
+              src={
+                showPasswordConfirmation
+                  ? "/assets/images/password-eye-on.svg"
+                  : "/assets/images/password-eye-off.svg"
+              }
               className={styles["password-eye"]}
+              onClick={handleShowPasswordConfirmation}
             />
           </div>
+          {errors.passwordConfirmation && (
+            <p className={styles["error-message"]}>
+              {errors.passwordConfirmation.message}
+            </p>
+          )}
         </section>
-        <button type="submit" className={styles["signup-button"]}>
+        <button
+          type="submit"
+          className={`${styles["signup-button"]} ${
+            isValid && styles["able-button"]
+          }`}
+          disabled={!isValid}
+        >
           회원가입
         </button>
       </form>
