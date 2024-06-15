@@ -3,12 +3,13 @@ import {
   createContext,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import axios from "@/lib/axios";
 import { LoginValues } from "@/types/login";
 import { useRouter } from "next/router";
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { User } from "@/types/user";
 
 interface AuthContextType {
@@ -28,24 +29,15 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [values, setValues] = useState<{
-    user: User | null;
-    isPending: boolean;
-  }>({
-    user: null,
-    isPending: true,
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [isPending, setIsPending] = useState(true);
 
   async function getMe() {
-    setValues((prevValues) => ({
-      ...prevValues,
-      isPending: true,
-    }));
+    setIsPending(true);
     let nextUser: User | null = null;
     try {
       const res = await axios.get("/users/me");
       const userData = res.data;
-
       nextUser = {
         id: userData.id,
         image: userData.image,
@@ -53,17 +45,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         updatedAt: userData.updatedAt,
         createdAt: userData.createdAt,
       };
-    } catch (e: any) {
-      if (e.response?.status === 401) {
-        console.log("토큰만료");
-        return;
-      }
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
     } finally {
-      setValues((prevValues) => ({
-        ...prevValues,
-        user: nextUser,
-        isPending: false,
-      }));
+      setUser(nextUser);
+      setIsPending(false);
     }
   }
 
@@ -88,11 +74,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setCookie("refreshToken", refreshToken, { maxAge: 60 * 60 * 24 });
 
       // 매핑된 사용자 데이터를 상태에 반영
-      setValues((prevValues) => ({
-        ...prevValues,
-        user: mappedUser,
-        isPending: false,
-      }));
+      setUser(mappedUser);
+      setIsPending(false);
 
       console.log("로그인 완료");
     } catch (e) {
@@ -107,23 +90,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   return (
-    <AuthContext.Provider
-      value={{ user: values.user, isPending: values.isPending, login }}
-    >
+    <AuthContext.Provider value={{ user, isPending, login }}>
       {children}
     </AuthContext.Provider>
   );
 }
-
 export function useAuth(required?: boolean) {
   const context = useContext(AuthContext);
   const router = useRouter();
+  const ref = useRef(false);
+
   if (!context) {
     throw new Error("반드시 AuthProvider 안에서 사용해야 합니다.");
   }
 
   useEffect(() => {
-    if (required && !context.user && !context.isPending) {
+    if (required && !getCookie("accessToken") && !context.isPending) {
+      if (!ref.current) {
+        alert("로그인이 필요합니다.");
+        ref.current = true;
+      }
       router.push("/login");
     }
   }, [context.user, context.isPending, required, router]);

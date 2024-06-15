@@ -9,24 +9,24 @@ interface CommentInputProps {
   articleId: string;
 }
 
-export default function CommentInput({ articleId }: CommentInputProps) {
+export default function AddComment({ articleId }: CommentInputProps) {
   const [content, setContent] = useState("");
-  const [isAble, setIsAble] = useState(true);
+  const buttonDisabled = content.trim().length === 0;
   const { user } = useAuth();
   const router = useRouter();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const nextValue = e.target.value;
-    setContent(nextValue);
-    setIsAble(nextValue.trim() === "");
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
+    const { value } = e.target;
+    setContent(value);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      router.push("/login");
-    }
     let result;
     const accessToken = getCookie("accessToken");
     try {
@@ -63,10 +63,10 @@ export default function CommentInput({ articleId }: CommentInputProps) {
         />
         <button
           className={`${styles["comment-button"]} ${
-            !isAble ? styles["active-button"] : ""
+            !buttonDisabled ? styles["active-button"] : ""
           }`}
           type="submit"
-          disabled={isAble}
+          disabled={buttonDisabled}
         >
           등록
         </button>

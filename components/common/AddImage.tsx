@@ -6,21 +6,23 @@ interface ImageInputProps {
   name: string;
 }
 
-export default function ImageInput({ onChange, name }: ImageInputProps) {
+export default function AddImage({ onChange, name }: ImageInputProps) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const nextValue = e.target.files?.[0];
-    if (nextValue) {
-      onChange(name, nextValue);
-      const nextPreview = URL.createObjectURL(nextValue);
-      setPreview(nextPreview);
-    } else {
-      onChange(name, null); // 파일이 없는 경우 null 전달
-      setPreview(null);
+    const { files } = e.target;
+
+    if (!files || files.length === 0) {
+      console.log("이게 언제 실행되는 거지");
+      return;
     }
+    const file = files[0];
+    onChange(name, file);
+
+    const nextPreview = URL.createObjectURL(file);
+    setPreview(nextPreview);
   };
 
   const handleClearClick = () => {

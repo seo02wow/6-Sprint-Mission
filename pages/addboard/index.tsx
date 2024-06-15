@@ -1,4 +1,4 @@
-import ImageInput from "@/components/common/ImageInput";
+import AddImage from "@/components/common/AddImage";
 import { useAuth } from "@/contexts/AuthProvider";
 import styles from "@/styles/AddBoard.module.scss";
 import { AddBoardValues } from "@/types/board";
@@ -117,7 +117,7 @@ export default function AddBoard() {
           onChange={handleInputChange}
         />
       </section>
-      <ImageInput name="image" onChange={handleChange} />
+      <AddImage name="image" onChange={handleChange} />
     </form>
   );
 }
