@@ -3,7 +3,7 @@ import axios from "@/lib/axios";
 import { Article, Comment } from "@/types/board";
 import { GetServerSidePropsContext } from "next";
 import styles from "@/styles/boardDetail.module.scss";
-import CommentInput from "@/components/board/CommentInput";
+import AddComment from "@/components/board/AddComment";
 import Comments from "@/components/board/Comments";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -39,7 +39,7 @@ export default function BoardDetail({
   return (
     <main className={styles.main}>
       <ArticleDetail article={article} />
-      <CommentInput articleId={articleId} />
+      <AddComment articleId={articleId} />
       <Comments comments={comments} />
     </main>
   );
